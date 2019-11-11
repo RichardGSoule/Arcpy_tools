@@ -1,0 +1,26 @@
+import arcpy
+arcpy.overwriteoutput = True
+def Check_Delete(in_data, data_type=None, outfilename=None, append=None, nodate=None):
+    if arcpy.Exists(in_data):
+        msg = "Delete " + str(in_data)
+        if outfilename == None:
+            print msg
+        else:
+            my_output(msg, outfilename, append, nodate)
+        try:
+            if data_type == None:
+                arcpy.Delete_management(in_data)
+            else:
+                arcpy.Delete_management(in_data, data_type)
+        except:
+            # If an error occurred while running a tool, print the messages
+            msg = arcpy.GetMessages()
+            my_output(msg, outfilename, append, nodate)
+            return msg
+    else:
+        msg = str(in_data) + " does not exist."
+        if outfilename == None:
+            print msg
+        else:
+            my_output(msg, outfilename, append, nodate)
+    return "ok"
